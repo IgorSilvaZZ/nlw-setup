@@ -2,6 +2,8 @@ import { FormEvent, useState } from "react";
 import { Check } from "phosphor-react";
 import * as Checkbox from "@radix-ui/react-checkbox";
 
+import { api } from "../lib/axios";
+
 const availableWeekDays = [
   "Domingo",
   "Segunda-feira",
@@ -16,8 +18,22 @@ export const NewHabitForm = () => {
   const [title, setTitle] = useState("");
   const [weekDays, setWeekDays] = useState<number[]>([]);
 
-  function createNewSubmit(event: FormEvent) {
+  async function createNewSubmit(event: FormEvent) {
     event.preventDefault();
+
+    if (!title || weekDays.length === 0) {
+      return;
+    }
+
+    await api.post("/habits", {
+      title,
+      weekDays,
+    });
+
+    setTitle("");
+    setWeekDays([]);
+
+    alert("Hpabito criado com sucesso!");
   }
 
   function handleToggleWeekDay(weekDay: number) {
@@ -45,6 +61,7 @@ export const NewHabitForm = () => {
         className='p-4 rounded-lg mt-3 bg-zinc-800 text-white placeholder:text-zinc-400'
         autoFocus
         onChange={(e) => setTitle(e.target.value)}
+        value={title}
       />
 
       <label className='font-semibold leading-tight mt-4'>
@@ -55,6 +72,7 @@ export const NewHabitForm = () => {
         {availableWeekDays.map((weekDay, index) => (
           <Checkbox.Root
             className='flex items-center gap-3 group'
+            checked={weekDays.includes(index)}
             onCheckedChange={() => handleToggleWeekDay(index)}
             key={weekDay}
           >
@@ -69,7 +87,10 @@ export const NewHabitForm = () => {
         ))}
       </div>
 
-      <button className='mt-6 rounded-lg p-4 flex gap-3 items-center justify-center font-semibold bg-green-600 hover:bg-green-500'>
+      <button
+        type='submit'
+        className='mt-6 rounded-lg p-4 flex gap-3 items-center justify-center font-semibold bg-green-600 hover:bg-green-500'
+      >
         <Check size={20} weight='bold' />
         Confirmar
       </button>
