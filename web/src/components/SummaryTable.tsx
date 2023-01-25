@@ -1,5 +1,9 @@
+import { useState, useEffect } from "react";
+
 import { generateDatesFromYearBeginning } from "../utils/generate-dates-from-year-beginning";
 import { HabitDay } from "./HabitDay";
+
+import { api } from "../lib/axios";
 
 const weekDays = ["D", "S", "T", "Q", "Q", "S", "S"];
 
@@ -14,7 +18,7 @@ export const SummaryTable = () => {
       <div className='grid grid-rows-7 grid-flow-row gap-3'>
         {weekDays.map((day, index) => (
           <div
-            className='text-zinc-400 font-bold text-xl h-10 w-10 flex items-center     justify-center'
+            className='text-zinc-400 font-bold text-xl h-10 w-10 flex items-center justify-center'
             key={index}
           >
             {day}
