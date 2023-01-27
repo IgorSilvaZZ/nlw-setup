@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "tsx --watch ./src/server"
+    "dev": "tsx watch ./src/server"
   },
   "dependencies": {
     "@fastify/cors": "^8.2.0",
